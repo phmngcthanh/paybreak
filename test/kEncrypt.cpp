@@ -78,7 +78,13 @@ BOOL kEncrypt(LPTSTR pszSourceFile, LPTSTR pszDestinationFile, LPTSTR pszPasswor
                             NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     HANDLE hDestinationFile = CreateFile(pszDestinationFile, FILE_WRITE_DATA, FILE_SHARE_READ,
                                 NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL,NULL);
-    
+								
+    if (CryptAcquireContext(&hCryptProv, NULL, CSP_TYPE, CSP_NAME,CRYPT_NEWKEYSET)){
+		 _tprintf(TEXT("[GOOD-catflag] A new container created. \n"));
+    } else {
+        MyHandleError(TEXT("[FAIL] already container. \n"), GetLastError());
+        
+    }
     if(CryptAcquireContext(&hCryptProv, NULL, CSP_TYPE, CSP_NAME, 0)) {
         _tprintf(TEXT("[GOOD] A cryptographic provider has been acquired. \n"));
     } else {
